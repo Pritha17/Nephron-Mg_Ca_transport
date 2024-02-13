@@ -36,7 +36,7 @@ Please cite appropriate paper(s) when using this model.
 
 Published papers:
 * [2019 Hu et al. "Functional implications of the sex differences in transporter abundance along the rat nephron: modeling and analysis"](https://journals.physiology.org/doi/full/10.1152/ajprenal.00352.2019)
-* [2023 Hakimi et al. "Coupling of renal sodium and calcium transport: A modeling analysis of transporter inhibition and sex differences"] (https://journals.physiology.org/doi/abs/10.1152/ajprenal.00145.2023)
+* [2023 Hakimi et al. "Coupling of renal sodium and calcium transport: A modeling analysis of transporter inhibition and sex differences"](https://journals.physiology.org/doi/abs/10.1152/ajprenal.00145.2023)
 
 ### Previous versions
 Previous versions of this model code are available [here](https://github.com/Layton-Lab/nephron).

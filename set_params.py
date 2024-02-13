@@ -717,8 +717,6 @@ def read_params(cell,filename,j):
                     if cell.segment == 'DCT':
                         if newTransp.type == 'NCC':
                             newTransp.act = (1-0.7)*value/(href*Cref)
-                    if newTransp.type == 'TRPM6':
-                        newTransp.act = (1-0.1)*value/(href*Cref)
                     if newTransp.type == 'TRPV5':
                         newTransp.act = (1+0.55)*value/(href*Cref)
                 elif cell.inhib == 'NCC-100':

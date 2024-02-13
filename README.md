@@ -14,7 +14,7 @@ Notes:
 * Model parameters can be found in the folder 'datafiles'. For example, PTparams_M_rat.dat contains the male rat parameters for the proximal tubule.
 * The code for the in silico inhibition experiments can be found in set_params.py: NKCC2-70 (lines 694-697), NCC-70 (lines 716-721), ENaC-70 (lines 736-738), TRPM6-70 (lines 850-854), TRPM6-99 (lines 856-860).
 * Plot folder contains the scripts for plotting the figures shown in the paper.
-* The baseline_results.zip folder contains the baseline output files.
+* Baseline_results.zip contains the baseline output files.
 
 ### Understanding output
 

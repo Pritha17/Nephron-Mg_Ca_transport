@@ -1,5 +1,5 @@
 # About
-This is latest version of sex-specific mathematical models for epithelial transport along the nephron implemented in Python 3. Related research papers are listed below. Please cite appropriately. To improve computation time, parallel computation of different types of nephron is implemented for the multiple nephron model. 
+This is latest version of sex-specific mathematical models for epithelial transport along the nephron implemented in Python 3. Related research papers are listed below. Please cite appropriately. 
 
 # Instructions
 To run the parallel simulation code use command: **python3 parallel_simulate.py --sex [option] --species rat --type superficial --inhibition [option]**
@@ -11,8 +11,8 @@ sex: **Male, Female** (required);
 inhibition: **NKCC2-70, NCC-70, ENaC-70, TRPM6-70, TRPM6-99**.
 
 Notes:
-* Model parameters can be found in the folder 'datafiles'.
-* The code for the in silico inhibition experiments can be found in set_params.py.
+* Model parameters can be found in the folder 'datafiles'. For example, PTparams_M_rat.dat contains the male rat parameters for the proximal tubule.
+* The code for the in silico inhibition experiments can be found in set_params.py: NKCC2-70 (lines 694-697), NCC-70 (lines 716-721), ENaC-70 (lines 736-738), TRPM6-70 (lines 850-854), TRPM6-99 (lines 856-860).
 
 ### Understanding output
 
@@ -40,4 +40,4 @@ Published papers:
 
 
 ### Previous versions
-Previous versions of this model code are available [here](https://github.com/uwrhu).
+Previous versions of this model code are available [here](https://github.com/Layton-Lab/nephron).

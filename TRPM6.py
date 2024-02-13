@@ -20,6 +20,9 @@ def trpm6(cell, ep, memb_id, act, area):
 
     flux_trpm6 = trpm6_Mgi * trpm6_pH  * (delta_vol - E_nernst) / (2 * F_si)
 
-    fluxMg = area[memb_id[0]][memb_id[1]] * act * flux_trpm6
+    # Concentration-dependence
+    f_con = 1 + (cell.conc[16, 0]) / (0.8 + cell.conc[16, 0])
+
+    fluxMg = area[memb_id[0]][memb_id[1]] * act * flux_trpm6 * f_con
 
     return [16], [fluxMg]

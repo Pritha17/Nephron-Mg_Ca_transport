@@ -16,7 +16,7 @@ def trpm6(cell, ep, memb_id, act, area):
 
     # Lowering extracellular pH increases TRPM6 inward currents
     # single channel conductance of TRPM6 at pH7.4 = 83.6 pS
-    trpm6_pH = 83.6 * (2 - 1 / (1 + ((7.4 - cell.pH[0]) / (7.4 - 4.3))))
+    trpm6_pH = 56.6 * (2 - 1 / (1 + ((7.4 - cell.pH[0]) / (7.4 - 5.5))))
 
     flux_trpm6 = trpm6_Mgi * trpm6_pH  * (delta_vol - E_nernst) / (2 * F_si)
 

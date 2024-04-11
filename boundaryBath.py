@@ -172,12 +172,8 @@ def boundaryBath(cell,i):
             cell.pap[1] = TotPotPap_LP
             cell.pap[2] = TotCloPap_LP
             cell.pap[3] = TotHCO3Pap_LP
+            
 
-    # Hypercalcemia
-    if cell.HCa == 'Y':
-        cell.cm[15] = 2.0
-        cell.oi[15] = 4.0
-        cell.pap[15] = 6.4
             
     if cell.segment=='cTAL' or cell.segment == 'MD' or cell.segment=='DCT' or cell.segment=='PT' or cell.segment == 'CNT' or cell.segment == 'CCD':
         if cell.species == 'rat':
@@ -289,9 +285,9 @@ def boundaryBath(cell,i):
             base_value_par_Ca = 12e3*1.0e-5/href # TAL permeability in the absence of Ca2+ & Mg2+
 
             if cell.sex == 'male':
-                base_value_par_Mg = 38e3*1.0e-5/href # TAL permeability in the absence of Ca2+ & Mg2+
+                base_value_par_Mg = 91e3*1.0e-5/href #72e3*1.0e-5/href #40e3*1.0e-5/href # TAL permeability in the absence of Ca2+ & Mg2+; 38
             else:
-                base_value_par_Mg = 56e3 * 1.0e-5 / href
+                base_value_par_Mg = 98e3 * 1.0e-5 / href #126e3 * 1.0e-5 / href #140, 56
 
             alpha_tal = -4/7
             EC_50_Ca = 1.25
@@ -668,17 +664,3 @@ def boundaryBath(cell,i):
 
     else:
         cell.conc[:,5] = cell.conc[:,5]
-
-# %%
-
-# %%
-
-# %%
-
-# %%
-
-# %%
-
-# %%
-
-# %%

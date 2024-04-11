@@ -2,6 +2,15 @@ from values import *
 
 def NCC(cell,i,memb_id,xNCC,area):
 
+	# Effect of CaSR (inhibition)
+	alpha_ncc = 0.5
+	EC_50_Ca = 1.25
+	EC_50_Mg = 2.5
+
+	xNCC = xNCC * (1 + alpha_ncc * (cell.conc[15, 0] ** 4) / (cell.conc[15, 0] ** 4 + EC_50_Ca ** 4)) * \
+		   (1 + 0.4 * alpha_ncc * (cell.conc[16, 0] ** 4) / (
+				   cell.conc[16, 0] ** 4 + EC_50_Mg ** 4))
+
 	if cell.segment == 'DCT':
 		LzD=i-1
 		x1=LzD+1

@@ -226,12 +226,12 @@ transport_Cell_LIS_NaKATPase_female 	800e-9
 transport_Cell_Bath_NaKATPase_male	400e-9
 transport_Cell_Bath_NaKATPase_female 	800e-9
 transport_Lumen_Cell_ENaC_female		7.0e-8
-transport_Lumen_Cell_TRPV5		35e-2 #30e-2
+transport_Lumen_Cell_TRPV5		35e-2 #31.2e-2 #35e-2
 transport_Cell_Bath_CaATPase		4.5e-9
 transport_Cell_LIS_CaATPase		4.5e-9
 transport_Cell_Bath_NCX1		2750e-9
 transport_Cell_LIS_NCX1			2750e-9
-transport_Lumen_Cell_TRPM6		4.5e-4
+transport_Lumen_Cell_TRPM6		6.0e-4 #5.2e-4 #4.5e-4
 transport_Cell_Bath_NaMgX		9e-9
 transport_Cell_LIS_NaMgX		9e-9
 #	Na		K		Cl		HCO3	H2CO3		CO2		HPO4	H2PO4	urea	NH3		NH4		H	HCO2	H2CO2	glucose				Ca	Mg

@@ -369,7 +369,7 @@ transport_Lumen_ICB_Pendrin		0.57e-9
 transport_ICA_LIS_AE1			150.0e-9
 transport_ICA_Bath_AE1			150.0e-9
 transport_Lumen_Cell_ENaC_male		14.0e-8
-transport_Lumen_Cell_TRPV5		5e-2
+transport_Lumen_Cell_TRPV5		6.9e-2 #5e-2
 transport_Cell_Bath_CaATPase		4.0e-9
 transport_Cell_LIS_CaATPase		4.0e-9
 transport_Cell_Bath_NCX1		2500e-9

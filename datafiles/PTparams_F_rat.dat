@@ -54,8 +54,8 @@ sig_H_Lumen_LIS		0.2
 sig_HCO2_Lumen_LIS	0.3
 sig_H2CO2_Lumen_LIS	0.7
 sig_glucose_Lumen_LIS	1.0
-sig_Ca_Lumen_LIS		0.89
-sig_Mg_Lumen_LIS		0.89
+sig_Ca_Lumen_LIS	0.89
+sig_Mg_Lumen_LIS	0.89
 #
 #  solute permeabilities, apical interface (in 1e-5cm/s)
 #  default permeability = 0

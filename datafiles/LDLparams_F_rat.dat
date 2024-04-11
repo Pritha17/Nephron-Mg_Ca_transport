@@ -121,7 +121,7 @@ perm_HCO2_Lumen_LIS	0.0
 perm_H2CO2_Lumen_LIS	0.0
 perm_glucose_Lumen_LIS	0.0
 perm_Ca_Lumen_LIS	0.0
-perm_Mg_Lumen_LIS	0.0
+perm_Mg_Lumen_LIS	13000
 #
 #  solute permeabilities, LIS-Bath interface (in 1e-5cm/s)
 #  default permeability = 0
@@ -164,8 +164,8 @@ conc_H		0.74527e-4	0.47991E-04	0.53956E-04	0.00005
 conc_HCO2	0.32762e+1	0.9		0.99383		0.99971
 conc_H2CO2	1.13386e-3	0.13840E-04	0.16408E-04	0.00029
 conc_glucose	0.90242e-02 	6.0		6.0		6.0
-conc_Ca		1.25		100e-6		1.25		1.25
-conc_Mg		0.48		0.8		0.45		0.48
+conc_Ca		2.25		100e-6		1.25		1.25
+conc_Mg		2.1		0.8		0.45		0.48
 #
 # Rates used in HCO3/H2CO3 reaction, default is set to 0
 #

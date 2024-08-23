@@ -160,27 +160,14 @@ def read_params(cell,filename,j):
                     if cell.sex == 'female':
                         if cell.segment == 'CCD' or cell.segment == 'OMCD' or cell.segment == 'IMCD':
                             cell.diam = value*0.95
-
-                # Type 1 Bartter's syndrome
+                
                 if cell.inhib == 'NKCC2-100':
                     if cell.segment == 'DCT':
                         if cell.sex == 'male':
-                            cell.diam = value * 1.4
+                            cell.diam = value * 1.4 #1.4
                         if cell.sex == 'female':
                             cell.diam = value * 1.75
-
-                # Gitelman's syndrome
-                if cell.inhib == 'NCC-100':
-                    if cell.segment == 'DCT':
-                        if cell.sex == 'male':
-                            cell.diam = value * 0.7
-                        if cell.sex == 'female':
-                            cell.diam = value * 0.9
-                    if cell.segment == 'CNT':
-                        if cell.sex == 'male':
-                            cell.diam = value * 1.3
-                        if cell.sex == 'female':
-                            cell.diam = value * 1.4
+                
                     
 
                 if cell.unx == 'Y':
@@ -283,27 +270,14 @@ def read_params(cell,filename,j):
                             cell.len = value*1.085
                         else:
                             cell.len = value*1.085
-
-                # Type 1 Bartter's syndrome
+                
                 if cell.inhib == 'NKCC2-100':
                     if cell.segment == 'DCT':
                         if cell.sex == 'male':
                             cell.len = value * 1.12
                         if cell.sex == 'female':
                             cell.len = value * 1.36
-
-                # Gitelman's syndrome
-                if cell.inhib == 'NCC-100':
-                    if cell.segment == 'DCT':
-                        if cell.sex == 'male':
-                            cell.len = value * 0.85
-                        if cell.sex == 'female':
-                            cell.len = value * 0.95
-                    if cell.segment == 'CNT':
-                        if cell.sex == 'male':
-                            cell.len = value * 1.1
-                        if cell.sex == 'female':
-                            cell.len = value * 1.15
+                    
 
             # Total number of cells:
             elif compare_string_prefix(id,"Total"):
@@ -561,11 +535,16 @@ def read_params(cell,filename,j):
                             newTransp.act = newTransp.act * 1.75
                         if newTransp.type == 'NaMgX':
                             newTransp.act = newTransp.act * 1.75
+                        #if newTransp.type == 'TRPV5':
+                         #   newTransp.act = newTransp.act * 0.8
                     else:
                         if newTransp.type == 'TRPM6':
                             newTransp.act = newTransp.act * 1.75
                         if newTransp.type == 'NaMgX':
                             newTransp.act = newTransp.act * 1.75
+                        #if newTransp.type == 'TRPV5':
+                         #   newTransp.act = newTransp.act * 0.8
+
 
                 if cell.diabete == 'Moderate':
                     if cell.segment == 'PT' or cell.segment == 'S3':
@@ -655,6 +634,23 @@ def read_params(cell,filename,j):
                             elif cell.sex == 'female':
                                 newTransp.act = 1.05*value/(href*Cref)
 
+                        '''
+                        Ca2+ specific TRPV5 Changes (severe):
+                        Based on: 
+                        Increased renal calcium and magnesium 
+                        transporter abundance in 
+                        streptozotocin-induced diabetes mellitus (2006)
+                        '''
+
+                        if newTransp.type == 'TRPV5':
+                            newTransp.act = 2.1*value/(href*Cref)
+                        
+                        if newTransp.type == 'CaATPase' and cell.segment == 'CNT':
+                            newTransp.act = 2.2*value #/(href*Cref)
+
+                        if newTransp.type == 'NCX1':
+                            newTransp.act = 2.2*value #/(href*Cref)
+
                     elif cell.segment == 'OMCD':
                         if newTransp.type == 'NaKATPase':
                             if cell.sex == 'male':
@@ -708,8 +704,6 @@ def read_params(cell,filename,j):
                     if cell.segment == 'mTAL' or cell.segment == 'cTAL':
                         if newTransp.type == 'NKCC2A' or newTransp.type == 'NKCC2B' or newTransp.type == 'NKCC2F':
                             newTransp.act = (1-0.999)*value/(href*Cref)
-
-                # Type 1 Bartter's syndrome
                 elif cell.inhib == 'NKCC2-100':
                     if cell.segment == 'mTAL' or cell.segment == 'cTAL':
                         if newTransp.type == 'NKCC2A' or newTransp.type == 'NKCC2B' or newTransp.type == 'NKCC2F':
@@ -739,12 +733,17 @@ def read_params(cell,filename,j):
                         if cell.sex == 'female':
                             newTransp.act = 4 * value / (href * Cref)
 
-                    if cell.segment in ['DCT', 'CNT', 'CCD'] and newTransp.type == 'NaKATPase':
+                    if cell.segment == 'DCT' and newTransp.type == 'NaKATPase':
                         if cell.sex == 'male':
                             newTransp.act = 2 * value / (href * Cref)
                         if cell.sex == 'female':
                             newTransp.act = 3 * value / (href * Cref)
-
+                    
+                    if cell.segment in ['CNT', 'CCD'] and newTransp.type == 'NaKATPase':
+                        if cell.sex == 'male':
+                            newTransp.act = 2 * value / (href * Cref)
+                        if cell.sex == 'female':
+                            newTransp.act = 3 * value / (href * Cref)
                 
                 elif cell.inhib == 'NCC-70':
                     if cell.segment == 'DCT':
@@ -753,16 +752,12 @@ def read_params(cell,filename,j):
                     if newTransp.type == 'TRPM6':
                         newTransp.act = (1-0.6)*value/(href*Cref)
 
-                # Gitelman's syndrome
                 elif cell.inhib == 'NCC-100':
                     if cell.segment == 'DCT':
                         if newTransp.type == 'NCC':
                             newTransp.act = (1-1)*value/(href*Cref)
                     if newTransp.type == 'TRPM6':
-                        if cell.sex == 'male':
-                            newTransp.act = (1 - 0.95) * value / (href * Cref)
-                        if cell.sex == 'female':
-                            newTransp.act = (1 - 0.8) * value / (href * Cref)
+                        newTransp.act = (1 - 0.8) * value / (href * Cref)
                     if cell.segment == 'PT' and newTransp.type == 'NHE3':
                         if cell.sex == 'male':
                             newTransp.act = (1 + 0.3) * value / (href * Cref)
@@ -873,6 +868,36 @@ def read_params(cell,filename,j):
                     elif newTransp.type == 'ENaC':
                         HT_rat = 1.45
                         newTransp.act = HT_rat*value/(href*Cref)
+
+                '''
+                CaSR inhibits NKCC2 and activates NCC
+                '''
+                if newTransp.type == 'NKCC2A' or newTransp.type == 'NKCC2B' or newTransp.type == 'NKCC2F':
+                    alpha_nkcc2 = -0.4
+                    EC_50_Ca = 1.25
+                    EC_50_Mg = 2.5
+                    newTransp.act = newTransp.act * (
+                                1 + alpha_nkcc2 * (cell.conc[15, 5] ** 4) / (cell.conc[15, 5] ** 4 + EC_50_Ca ** 4)) * \
+                                    (1 + 0.4 * alpha_nkcc2 * (cell.conc[16, 5] ** 4) / (cell.conc[16, 5] ** 4 + EC_50_Mg ** 4))
+
+                if newTransp.type == 'NCC':
+                    alpha_ncc = 0.5
+                    EC_50_Ca = 1.25
+                    EC_50_Mg = 2.5
+                    newTransp.act = newTransp.act * (
+                            1 + alpha_ncc * (cell.conc[15, 0] ** 4) / (cell.conc[15, 0] ** 4 + EC_50_Ca ** 4)) * \
+                                    (1 + 0.4 * alpha_ncc * (cell.conc[16, 0] ** 4) / (
+                                                cell.conc[16, 0] ** 4 + EC_50_Mg ** 4))
+
+                '''
+                Hypercalcemia decreases NHE3 & NaKATPase expression
+                '''
+                if cell.HCa == 'Y':
+                    if cell.segment in ['PT', 'S3', 'mTAL', 'cTAL']:
+                        if newTransp.type == 'NHE3':
+                            newTransp.act = (1-0.1) * newTransp.act
+                        if newTransp.type == 'NaKATPase':
+                            newTransp.act = (1 - 0.05) * newTransp.act
 
                 # TRPM6 inhibition
                 if cell.inhib == 'TRPM6-70':

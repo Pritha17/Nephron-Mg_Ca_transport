@@ -37,6 +37,7 @@ The unit of flow is **pmol/min**.
 Please cite appropriate paper(s) when using this model.
 
 Published papers:
+* [2024 Dutta et al. "Paradoxes in magnesium transport in type 1 Bartter’s syndrome and Gitelman’s syndrome: a modeling analysis"](https://journals.physiology.org/doi/abs/10.1152/ajprenal.00117.2024)
 * [2024 Dutta et al. "How the kidney regulates magnesium: a modelling study"](https://royalsocietypublishing.org/doi/full/10.1098/rsos.231484)
 * [2023 Hakimi et al. "Coupling of renal sodium and calcium transport: A modeling analysis of transporter inhibition and sex differences"](https://journals.physiology.org/doi/abs/10.1152/ajprenal.00145.2023)
 * [2019 Hu et al. "Functional implications of the sex differences in transporter abundance along the rat nephron: modeling and analysis"](https://journals.physiology.org/doi/full/10.1152/ajprenal.00352.2019)

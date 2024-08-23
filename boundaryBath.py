@@ -664,3 +664,17 @@ def boundaryBath(cell,i):
 
     else:
         cell.conc[:,5] = cell.conc[:,5]
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%
+
+# %%

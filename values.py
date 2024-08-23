@@ -216,7 +216,7 @@ TotHCO3Pap_LP = 25.0*0.9645
 # Ca2+
 TotcaOI_noinhib = 2.5
 TotcaOI_70NKCCinhib = 2.45 #1.875
-TotcaOI_100NKCCinhib = 2.4 #1.25
+TotcaOI_100NKCCinhib = 1.5 #2.4 #1.25
 
 TotcaPap_noinhib = 4.0
 TotcaPap_70NKCCinhib = 2.625
@@ -230,8 +230,8 @@ TotucaPap_80inhib = 3.0
 
 # Mg2+
 TotmgOI_noinhib = 0.96
-TotmgOI_70NKCCinhib = 0.77
-TotmgOI_100NKCCinhib = 0.58
+TotmgOI_70NKCCinhib = 0.905 #0.72
+TotmgOI_100NKCCinhib = 0.58 #0.85 #0.48
 
 TotmgPap_noinhib = 1.54
 TotmgPap_70NKCCinhib = 1.01

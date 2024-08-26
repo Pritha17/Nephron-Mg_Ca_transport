@@ -138,6 +138,38 @@ def compute(N,filename,method, sup_or_jux=None,diabete='Non',species = 'human',s
             cell[i].conc[:,1] = cell[i].conc[:,5]
             cell[i].conc[:,4] = cell[i].conc[:,5]
 
+    if cell[0].segment == 'LDL':
+        inputfile = open('./outlets/SDLoutlet' + cell[0].sex + cell[0].species + '_' + sup_or_jux + '.txt', 'r')
+        for i in range(NS):
+            line = inputfile.readline()
+            conclist = line.split(' ')
+            cell[0].conc[i, 0] = float(conclist[0])
+        line_vol = inputfile.readline()
+        vollist = line_vol.split(' ')
+        cell[0].vol[0] = float(vollist[0])
+        line_ep = inputfile.readline()
+        eplist = line_ep.split(' ')
+        cell[0].ep[0] = float(eplist[0])
+        line_pres = inputfile.readline()
+        preslist = line_pres.split(' ')
+        cell[0].pres[0] = float(preslist[0])
+
+    if cell[0].segment == 'LAL':
+        inputfile = open('./outlets/LDLoutlet' + cell[0].sex + cell[0].species + '_' + sup_or_jux + '.txt', 'r')
+        for i in range(NS):
+            line = inputfile.readline()
+            conclist = line.split(' ')
+            cell[0].conc[i, 0] = float(conclist[0])
+        line_vol = inputfile.readline()
+        vollist = line_vol.split(' ')
+        cell[0].vol[0] = float(vollist[0])
+        line_ep = inputfile.readline()
+        eplist = line_ep.split(' ')
+        cell[0].ep[0] = float(eplist[0])
+        line_pres = inputfile.readline()
+        preslist = line_pres.split(' ')
+        cell[0].pres[0] = float(preslist[0])
+
     if cell[0].segment == 'mTAL':
         if cell[0].type == 'sup':
             inputfile = open('./outlets/SDLoutlet'+cell[0].sex+cell[0].species+'_'+sup_or_jux+'.txt','r')

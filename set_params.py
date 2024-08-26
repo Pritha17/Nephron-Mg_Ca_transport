@@ -164,10 +164,21 @@ def read_params(cell,filename,j):
                 if cell.inhib == 'NKCC2-100':
                     if cell.segment == 'DCT':
                         if cell.sex == 'male':
-                            cell.diam = value * 1.4 #1.4
+                            cell.diam = value * 1.4
                         if cell.sex == 'female':
                             cell.diam = value * 1.75
-                
+
+                if cell.inhib == 'NCC-100':
+                    if cell.segment == 'DCT':
+                        if cell.sex == 'male':
+                            cell.diam = value * 0.7
+                        if cell.sex == 'female':
+                            cell.diam = value * 0.9
+                    if cell.segment == 'CNT':
+                        if cell.sex == 'male':
+                            cell.diam = value * 1.3
+                        if cell.sex == 'female':
+                            cell.diam = value * 1.4
                     
 
                 if cell.unx == 'Y':
@@ -277,6 +288,18 @@ def read_params(cell,filename,j):
                             cell.len = value * 1.12
                         if cell.sex == 'female':
                             cell.len = value * 1.36
+
+                if cell.inhib == 'NCC-100':
+                    if cell.segment == 'DCT':
+                        if cell.sex == 'male':
+                            cell.len = value * 0.85
+                        if cell.sex == 'female':
+                            cell.len = value * 0.95
+                    if cell.segment == 'CNT':
+                        if cell.sex == 'male':
+                            cell.len = value * 1.1
+                        if cell.sex == 'female':
+                            cell.len = value * 1.15
                     
 
             # Total number of cells:
@@ -757,7 +780,10 @@ def read_params(cell,filename,j):
                         if newTransp.type == 'NCC':
                             newTransp.act = (1-1)*value/(href*Cref)
                     if newTransp.type == 'TRPM6':
-                        newTransp.act = (1 - 0.8) * value / (href * Cref)
+                        if cell.sex == 'male':
+                            newTransp.act = (1 - 0.95) * value / (href * Cref)
+                        if cell.sex == 'female':
+                            newTransp.act = (1 - 0.8) * value / (href * Cref)
                     if cell.segment == 'PT' and newTransp.type == 'NHE3':
                         if cell.sex == 'male':
                             newTransp.act = (1 + 0.3) * value / (href * Cref)

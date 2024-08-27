@@ -150,7 +150,7 @@ perm_HCO2_Lumen_LIS	0.0
 perm_H2CO2_Lumen_LIS	0.0
 perm_glucose_Lumen_LIS	0.0
 perm_Ca_Lumen_LIS	0.0
-perm_Mg_Lumen_LIS	6500
+perm_Mg_Lumen_LIS	6500 #0.0
 #
 #  solute permeabilities, LIS-Bath interface (in 1e-5cm/s)
 #  default permeability = 0

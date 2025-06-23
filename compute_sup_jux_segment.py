@@ -28,7 +28,7 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
     solute = ['Na','K','Cl','HCO3','H2CO3','CO2','HPO4','H2PO4','urea','NH3','NH4','H','HCO2','H2CO2','glu', 'Ca', 'Mg'] # 17 solutes
     compart = ['Lumen','Cell','ICA','ICB','LIS','Bath']
     cw=Vref*60e6
-    
+
     #========================================================
     # Proximal convolute tubule
     #========================================================
@@ -51,7 +51,8 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
     else:
         filename ='./datafiles/PTparams_F_'+species[0:3]+'.dat'
 
-    pt, fluxvals_pt =compute(NPT,filename,'Broyden',sup_or_jux,diabete,species,sup_or_multi=sup_or_multi,inhibition = inhib,unx = unx, preg = preg, HT=HT, HCa=HCa)
+    #pt, fluxvals_pt =compute(NPT,filename,'Newton',sup_or_jux,diabete,species,sup_or_multi=sup_or_multi,inhibition = inhib,unx = unx, preg = preg, HT=HT, HCa=HCa)
+    pt = compute(NPT, filename, 'Newton', sup_or_jux, diabete, species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.zeros(NPT)
 
@@ -112,8 +113,8 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
         filename = './datafiles/S3params_F_'+species[0:3]+'.dat'
     else:
         filename ='./datafiles/S3params_F_'+species[0:3]+'.dat'
-    s3, fluxvals_s3=compute(NS3,filename,'Newton',  sup_or_jux,diabete,species,sup_or_multi=sup_or_multi,inhibition = inhib,unx = unx,preg = preg, HT = HT, HCa=HCa)
-
+    #s3, fluxvals_s3=compute(NS3,filename,'Newton',  sup_or_jux,diabete,species,sup_or_multi=sup_or_multi,inhibition = inhib,unx = unx,preg = preg, HT = HT, HCa=HCa)
+    s3 = compute(NS3, filename, 'Newton', sup_or_jux, diabete, species, sup_or_multi=sup_or_multi,inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
     Scaletorq = np.zeros(NS3)
 
     for j in range(NS3):
@@ -154,7 +155,7 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
 
     print('%s S3 finished.' %(sup_or_jux))
     print('\n')
-
+    
     #========================================================
     # Short descending limb
     #========================================================
@@ -163,7 +164,7 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
     if species == 'human':
         method = 'Newton'
     elif species == 'rat':
-        method = 'Broyden'
+        method = 'Newton'
     elif species == 'mouse':
         method = 'Broyden'
     else:
@@ -177,14 +178,15 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
     else:
         filename ='./datafiles/SDLparams_F_'+species[0:3]+'.dat'
 
-    sdl, fluxvals_sdl =compute(NSDL,filename,method ,sup_or_jux,diabete,species,sup_or_multi=sup_or_multi,inhibition = inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    #sdl, fluxvals_sdl =compute(NSDL,filename,method ,sup_or_jux,diabete,species,sup_or_multi=sup_or_multi,inhibition = inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    sdl = compute(NSDL, filename, method, sup_or_jux, diabete, species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NSDL)
     output.output_segment_results(sdl,sup_or_jux,Scaletorq,file_to_save,NSDL)
 
     print('%s SDL finished.' %(sup_or_jux))
     print('\n')
-
+    
     #========================================================
     # Long descending limb
     #========================================================
@@ -236,7 +238,8 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
         filename = './datafiles/mTALparams_F_'+species[0:3]+'.dat'
     else:
         filename ='./datafiles/mTALparams_F_'+species[0:3]+'.dat'
-    mtal, fluxvals_mtal =compute(NmTAL,filename,'Newton' ,sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    #mtal, fluxvals_mtal =compute(NmTAL,filename,'Newton' ,sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    mtal = compute(NmTAL, filename, 'Newton', sup_or_jux, diabete, species, sup_or_multi, inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NmTAL)
 
@@ -256,7 +259,8 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
         filename = './datafiles/cTALparams_F_'+species[0:3]+'.dat'
     else:
         filename ='./datafiles/cTALparams_F_'+species[0:3]+'.dat'
-    ctal, fluxvals_ctal=compute(NcTAL,filename,'Newton' ,sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    #ctal, fluxvals_ctal=compute(NcTAL,filename,'Newton' ,sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    ctal = compute(NcTAL, filename, 'Newton', sup_or_jux, diabete, species, sup_or_multi, inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NcTAL)
 
@@ -264,7 +268,7 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
 
     print('%s cTAL finished.' %(sup_or_jux))
     print('\n')
-
+    
     #=======================================================
     # Distal convoluted tubule
     #========================================================
@@ -276,7 +280,8 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
         filename = './datafiles/DCTparams_F_'+species[0:3]+'.dat'
     else:
         filename ='./datafiles/DCTparams_F_'+species[0:3]+'.dat'
-    dct, fluxvals_dct =compute(NDCT,filename,'Newton' ,sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    #dct, fluxvals_dct =compute(NDCT,filename,'Newton' ,sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    dct = compute(NDCT, filename, 'Newton', sup_or_jux, diabete, species, sup_or_multi, inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NDCT)
 
@@ -296,7 +301,8 @@ def compute_segment(sup_or_jux,sex,species,sup_or_multi,diabete,inhib,unx,preg,H
         filename = './datafiles/CNTparams_F_'+species[0:3]+'.dat'
     else:
         filename ='./datafiles/CNTparams_F_'+species[0:3]+'.dat'
-    cnt, fluxvals_cnt =compute(NCNT,filename,'Newton' , sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    #cnt, fluxvals_cnt =compute(NCNT,filename,'Newton' , sup_or_jux,diabete,species,sup_or_multi,inhib,unx = unx, preg = preg, HT = HT, HCa=HCa)
+    cnt = compute(NCNT, filename, 'Newton', sup_or_jux, diabete, species, sup_or_multi, inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NCNT)
 

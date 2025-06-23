@@ -131,16 +131,36 @@ def calatapse(cell,ep,memb_id,act,area):
 
 def calatapse_mtal(cell,i,ep,memb_id,act,area):
 
-    AffCa = 42.6e-6 #from paper
+    if cell.segment == 'DCT' and i < 2.0 / 3.0 * cell.total:
+        AffCa = 140e-6
+    elif cell.segment == 'CCD' or cell.segment == 'OMCD' or cell.segment == 'IMCD':
+        AffCa = 210e-6
+    else:
+        AffCa = 42.6e-6 #from paper
+
     actCa = cell.conc[15][memb_id[0]]/(cell.conc[15][memb_id[0]]+AffCa)
 
     dJactCa = area[memb_id[0]][memb_id[1]]*act*(actCa)
-          
+
     fluxCa = dJactCa
-    if (cell.segment == 'DCT' and i < 2.0/3.0*cell.total):
-        fluxCa = 0
 
     return [15], [fluxCa]
+
+def Mgatapse(cell, ep, memb_id, act, area):
+    if cell.segment == 'PT' or cell.segment =='S3' or cell.segment == 'mTAL':
+        AffMg = 0.8
+    elif cell.segment == 'cTAL' or cell.segment == 'DCT':
+        AffMg = 20
+    else:
+        AffMg = 30
+    actMg = cell.conc[16][memb_id[0]] / (cell.conc[16][memb_id[0]] + AffMg)
+
+    dJactMg = area[memb_id[0]][memb_id[1]] * act * (actMg)
+
+    fluxMg = dJactMg
+
+    return [16], [fluxMg]
+
 #------------------------------------------------------------------------
 #    H-K-ATPase
 #------------------------------------------------------------------------

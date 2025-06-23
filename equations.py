@@ -42,70 +42,24 @@ def conservation_init (my_cell0, my_cell1,my_celln, my_dx):
 def conservation_eqs (x,i):
 
     Jvol1=np.zeros(NC*NC).reshape(NC,NC)
-    Jsol1=np.zeros(NS*NC*NC).reshape(NS,NC,NC)    
+    Jsol1=np.zeros(NS*NC*NC).reshape(NS,NC,NC)
 
-    if cell1.segment == 'PT' or cell1.segment == 'S3' or cell1.segment == 'mTAL' or cell1.segment == 'cTAL' or cell1.segment == 'MD' or cell1.segment == 'DCT' or cell1.segment =='SDL' or cell1.segment == 'LDL' or cell1.segment == 'LAL' or cell1.segment == 'IMCD':
-        if cell1.segment in ['PT','S3','SDL']:
-            cell1.conc[:,0] = x[0:NS] 
-            cell1.conc[:16,1] = x[NS:2*NS-1]
-            cell1.conc[:,4] = x[2*NS-1:3*NS-1]
-        
-            cell1.vol[0] = x[3*NS-1]
-            cell1.vol[1] = x[3*NS]
-            cell1.vol[4] = x[3*NS+1]
-        
-            cell1.ep[0] = x[3*NS+2]
-            cell1.ep[1] = x[3*NS+3]
-            cell1.ep[4] = x[3*NS+4]
-        
-            cell1.pres[0] = x[3*NS+5]
-        
+    if cell1.segment == 'PT' or cell1.segment == 'S3' or cell1.segment == 'mTAL' or cell1.segment == 'cTAL' or cell1.segment == 'MD' or cell1.segment == 'DCT' or cell1.segment == 'SDL' or cell1.segment == 'LDL' or cell1.segment == 'LAL' or cell1.segment == 'IMCD':
 
-        elif cell1.segment == 'DCT':
-            if i < 2.0 / 3.0 * cell1.total:
-                cell1.conc[:, 0] = x[0:NS]
-                cell1.conc[:15, 1] = x[NS:2*NS-2]
-                cell1.conc[16, 1] = x[2*NS-2]
-                cell1.conc[:, 4] = x[2*NS-1:3*NS-1]
+        cell1.conc[:, 0] = x[0:NS]
+        cell1.conc[:, 1] = x[NS:2 * NS]
+        cell1.conc[:, 4] = x[2 * NS:3 * NS]
+        #print(cell1.conc[16, 1])
 
-                cell1.vol[0] = x[3*NS-1]
-                cell1.vol[1] = x[3*NS]
-                cell1.vol[4] = x[3*NS+1]
+        cell1.vol[0] = x[3 * NS]
+        cell1.vol[1] = x[3 * NS + 1]
+        cell1.vol[4] = x[3 * NS + 2]
 
-                cell1.ep[0] = x[3*NS+2]
-                cell1.ep[1] = x[3*NS+3]
-                cell1.ep[4] = x[3*NS+4]
+        cell1.ep[0] = x[3 * NS + 3]
+        cell1.ep[1] = x[3 * NS + 4]
+        cell1.ep[4] = x[3 * NS + 5]
 
-                cell1.pres[0] = x[3*NS+5]
-            else:
-                cell1.conc[:, 0] = x[0:NS]
-                cell1.conc[:, 1] = x[NS:2 * NS]
-                cell1.conc[:, 4] = x[2 * NS:3 * NS]
-
-                cell1.vol[0] = x[3 * NS]
-                cell1.vol[1] = x[3 * NS+1]
-                cell1.vol[4] = x[3 * NS + 2]
-
-                cell1.ep[0] = x[3 * NS + 3]
-                cell1.ep[1] = x[3 * NS + 4]
-                cell1.ep[4] = x[3 * NS + 5]
-
-                cell1.pres[0] = x[3 * NS + 6]
-
-        else:
-            cell1.conc[:,0] = x[0:NS] 
-            cell1.conc[:15,1] = x[NS:2*NS-2]
-            cell1.conc[:,4] = x[2*NS-2:3*NS-2]
-        
-            cell1.vol[0] = x[3*NS-2]
-            cell1.vol[1] = x[3*NS-1]
-            cell1.vol[4] = x[3*NS]
-        
-            cell1.ep[0] = x[3*NS+1]
-            cell1.ep[1] = x[3*NS+2]
-            cell1.ep[4] = x[3*NS+3]
-        
-            cell1.pres[0] = x[3*NS+4]
+        cell1.pres[0] = x[3 * NS + 6]
 
 
         ph = np.zeros(NC)
@@ -136,23 +90,16 @@ def conservation_eqs (x,i):
         for j in range(NS):
             fsol0[j] = cell0.conc[j][0]*cell0.vol[0]*Vref/href 
             fsol1[j] = cell1.conc[j][0]*cell1.vol[0]*Vref/href
-    
+
+        #print(cell1.conc[16][0], fsol1[16])
                
         fvol0 = cell0.vol[0]*Vref
         fvol1 = cell1.vol[0]*Vref
-    
+
         PM0 = cell0.pres[0]
-        if cell1.segment in ['PT', 'S3', 'SDL']:
-            PM1 = x[3*NS+5]
-        elif cell1.segment == 'DCT':
-            if i < 2.0/3.0*cell1.total:
-                PM1 = x[3*NS+5]
-            else:
-                PM1 = x[3 * NS + 6]
-        else:
-            PM1 = x[3*NS+4]
+        PM1 = x[3 * NS + 6]
 
-
+        #print(cell1.conc[16][1])
         Jvol1,Jsol1,electro_jsol, convective_flux, active_jsol = flux.compute_fluxes(cell1,i)
 
     #---------------------------------------------------------------------
@@ -188,6 +135,10 @@ def conservation_eqs (x,i):
             S[1+3*j] = -Jsol1[j][0][1]+Jsol1[j][1][4]+Jsol1[j][1][5] # total cellular flux
             S[2+3*j] = -Jsol1[j][1][4]-Jsol1[j][0][4]+Jsol1[j][4][5]    # total LIS flux
         #print(Jsol1[2,1,4],Jsol1[2,1,5],Jsol1[2,0,1])
+        #print(Jsol1[16, 0, 1], Jsol1[16, 1, 4], Jsol1[16, 1, 5], S[1+3*16])
+        #print(cell0.conc[15][1], cell1.conc[15][1], Jsol1[15, 0, 1], Jsol1[15, 1, 4], Jsol1[15, 1, 5], S[1 + 3 * 15])
+        #print(Jsol1[14, 0, 1], Jsol1[14, 1, 4], Jsol1[14, 1, 5], S[1 + 3 * 14])
+        #print(S[49], S[50])
 
     #---------------------------------------------------------------------
     #---------------------------------------------------------------------
@@ -236,29 +187,15 @@ def conservation_eqs (x,i):
         fvec[24]=S[24]
         fvec[25]=S[25]
         fvec[26]=S[26]
-    
-        '''
-        Ca2+ equations for the compartments
-        '''
-        fvec[45] = S[45]
-        fvec[46] = S[46]
-        fvec[47] = S[47]
-        #print("fvec Ca", fvec[45], fvec[46], fvec[47])
-        '''
-        Mg2+ equations for the compartments
-        '''
-        fvec[48] = S[48]
-        fvec[49] = S[49]
-        fvec[50] = S[50]
-        #print("fvec Mg", fvec[48], fvec[49], fvec[50])
 
     #HCO2-/H2CO2 equations modified
 
-        for m in range(12,15):
+        for m in range(12,17):
             fvec[3*m]=S[3*m]
             fvec[1+3*m]=S[1+3*m]
             fvec[2+3*m]=S[2+3*m]
 
+        #print(fvec[1+3*14], fvec[1+3*16])
 
     #---------------------------------------------------------------------
     #    For CO2/HCO3/H2CO3
@@ -450,62 +387,19 @@ def conservation_eqs (x,i):
 
         fvec[6+3*NS] = PM1-PM0+factor1*cell1.vol[0]*Vref*cell1.len/cell1.total
 
-        '''
-        Ca2+: For segments that do not have trancellular Ca2+ transport, celullar concentration equation removed
-        Based on Edwards paper
-        Calcium reabsorption in the distal tubule: regulation by sodium, pH, and flow (2013)
-        '''
-        
-        if cell1.segment in ['PT','S3','SDL']:
-            fvec = np.delete(fvec,49)
-        elif cell1.segment == 'DCT':
-            if i < 2.0/3.0*cell1.total:
-                fvec = np.delete(fvec, 46)
-        else:
-            fvec = np.delete(fvec, [46, 49])
-
 
     elif cell1.segment == 'CNT' or cell1.segment == 'CCD' or cell1.segment == 'OMCD':
-        if cell1.segment =='CNT':
-            for j in range(NS):
-                if j != 15 and j != 16:
-                    cell1.conc[j,0] = x[5*j]
-                    cell1.conc[j,1] = x[5*j+1]
-                    cell1.conc[j,2] = x[5*j+2]
-                    cell1.conc[j,3] = x[5*j+3]
-                    cell1.conc[j,4] = x[5*j+4]
-                elif j==15:
-                    cell1.conc[j,0] = x[5*j]
-                    cell1.conc[j,1] = x[5*j+1]
-                    cell1.conc[j,4] = x[5*j+2]
-                else:
-                    cell1.conc[j, 0] = x[5*j-2]
-                    cell1.conc[j, 4] = x[5*j-1]
+        for j in range(NS):
+            cell1.conc[j, 0] = x[5 * j]
+            cell1.conc[j, 1] = x[5 * j + 1]
+            cell1.conc[j, 2] = x[5 * j + 2]
+            cell1.conc[j, 3] = x[5 * j + 3]
+            cell1.conc[j, 4] = x[5 * j + 4]
 
-
-            for j in range(NC-1):
-                cell1.vol[j]=x[5*NS+j-5]
-                cell1.ep[j]=x[5*NS+5+j-5]
-            cell1.pres[0]= x[5*NS+5]
-        else:
-            for j in range(NS):
-                if j != 15 and j != 16:
-                    cell1.conc[j,0] = x[5*j]
-                    cell1.conc[j,1] = x[5*j+1]
-                    cell1.conc[j,2] = x[5*j+2]
-                    cell1.conc[j,3] = x[5*j+3]
-                    cell1.conc[j,4] = x[5*j+4]
-                elif j == 15:
-                    cell1.conc[j,0] = x[5*j]
-                    cell1.conc[j,4] = x[5*j+1]
-                else:
-                    cell1.conc[j, 0] = x[5*j-3]
-                    cell1.conc[j, 4] = x[5*j-2]
-
-            for j in range(NC-1):
-                cell1.vol[j]=x[5*NS+j-6]
-                cell1.ep[j]=x[5*NS+5+j-6]
-            cell1.pres[0]=x[5*NS+4]
+        for j in range(NC - 1):
+            cell1.vol[j] = x[5 * NS + j]
+            cell1.ep[j] = x[5 * NS + 5 + j]
+        cell1.pres[0] = x[5 * NS + 10]
             
 
         ph = np.zeros(NC)
@@ -617,23 +511,10 @@ def conservation_eqs (x,i):
         fvec[43] = S[43]
         fvec[44] = S[44]
 
-        # Ca2+
-        fvec[75] = S[75]
-        fvec[76] = S[76]
-        fvec[77] = S[77]
-        fvec[78] = S[78]
-        fvec[79] = S[79]
-
-        # Mg2+
-        fvec[80] = S[80]
-        fvec[81] = S[81]
-        fvec[82] = S[82]
-        fvec[83] = S[83]
-        fvec[84] = S[84]
     #----------------------------------------------------------------------
     #    HCO2-/H2CO2 equations modified    
     #----------------------------------------------------------------------
-        for m in range(12,15):
+        for m in range(12,17):
             fvec[5*m] = S[5*m]
             fvec[5*m+1] = S[5*m+1]
             fvec[5*m+2] = S[5*m+2]
@@ -649,26 +530,13 @@ def conservation_eqs (x,i):
             fvec[42] = S[42]
             fvec[44] = S[44]
 
-            # Ca2+
-            fvec[75] = S[75]
-            fvec[76] = S[76]
-            fvec[77] = S[77]
-            fvec[78] = S[78]
-            fvec[79] = S[79]
 
-            # Mg2+
-            fvec[80] = S[80]
-            fvec[81] = S[81]
-            fvec[82] = S[82]
-            fvec[83] = S[83]
-            fvec[84] = S[84]
-            
             fvec[3] = cell1.conc[0,3]-cell1.conc[0,2]
             fvec[8] = cell1.conc[1,3]-cell1.conc[1,2]
             fvec[13] = cell1.conc[2,3]-cell1.conc[2,2]
             fvec[43] = cell1.conc[8,3]-cell1.conc[8,2]
-            fvec[78] = cell1.conc[15,3] - cell1.conc[15,2]
-            fvec[83] = cell1.conc[16, 3] - cell1.conc[16, 2]
+            #fvec[78] = cell1.conc[15,3] - cell1.conc[15,2]
+            #fvec[83] = cell1.conc[16, 3] - cell1.conc[16, 2]
     #---------------------------------------------------------------------
     #    For CO2/HCO3/H2CO3
     #    The dimensional factor for the kinetic term in the lumen is 
@@ -849,23 +717,14 @@ def conservation_eqs (x,i):
             print('cell1.segment: '+str(cell1.segment))
             raise Exception ('ratio not set for this segment')
             
-        fvec[5*NS+10] = cell1.pres[0]-cell0.pres[0]+ratio*cell1.vol[0]*Vref*cell1.len/cell1.total  
-        '''
-        Ca2+: For segments that do not have trancellular Ca2+ transport, celullar concentration equation removed
-        Based on Edwards paper
-        Calcium reabsorption in the distal tubule: regulation by sodium, pH, and flow (2013)
-        '''
-        if cell1.segment == 'CNT':
-            fvec = np.delete(fvec, [77,78,81,82,83])
-        else:
-            fvec = np.delete(fvec,[76,77,78,81,82,83])
+        fvec[5*NS+10] = cell1.pres[0]-cell0.pres[0]+ratio*cell1.vol[0]*Vref*cell1.len/cell1.total
 
     else:
 
         raise Exception('what is this segment? ' + cell1.segment)
-    
-    #print("fvec end", fvec[45], fvec[46], fvec[47], fvec[48], fvec[49])
-    return fvec, Jvol1,Jsol1,electro_jsol, convective_flux, active_jsol
+
+    #return fvec, Jvol1,Jsol1,electro_jsol, convective_flux, active_jsol
+    return fvec
 
 
 

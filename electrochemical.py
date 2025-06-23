@@ -30,20 +30,16 @@ def compute_ecd_fluxes (cell,jvol):
 
                 XI = zval[i]*F*EPref/RT*(cell.ep[k]-cell.ep[l])                
                 dint = np.exp(-XI)
-                #print("testing", cell.type,i,k,l, cell.ep[k]-cell.ep[l], dint)
-               
+
                 if (abs(dint-1)<1e-6):
                     jsol[i][k][l] = cell.area[k][l]*cell.h[i][k][l]*(cell.conc[i][k]-cell.conc[i][l])
                     electro_flux[i][k][l] = cell.area[k][l]*cell.h[i][k][l]*(cell.conc[i][k]-cell.conc[i][l])
-                    #if i == 0 or i == 16:
-                     #   print(i,k,l,cell.h[i][k][l],cell.conc[i][k],cell.conc[i][l])
+                    #if i == 14:
+                     #   print(i,k,l,cell.area[k][l],cell.h[i][k][l],cell.conc[i][k]-cell.conc[i][l], electro_flux[i][k][l])
 
                 else:
                     jsol[i][k][l] = cell.area[k][l]*cell.h[i][k][l]*XI*(cell.conc[i][k]-cell.conc[i][l]*dint)/(1-dint)             
                     electro_flux[i][k][l] = cell.area[k][l]*cell.h[i][k][l]*XI*(cell.conc[i][k]-cell.conc[i][l]*dint)/(1-dint)
-
-                #if i == 16:
-                 #   print(i,k,l, cell.h[i][k][l], jsol[i][k][l])             
 
                 # convective component
                 concdiff = cell.conc[i][k]-cell.conc[i][l]
@@ -55,7 +51,8 @@ def compute_ecd_fluxes (cell,jvol):
                     convective_flux[i][k][l] = convective_flux[i][k][l] + convect
                 # define driving force for coupled fluxes
                 delmu[i][k][l] = dmu[i][k]-dmu[i][l]
-                
+
+    #print("ECD", jsol[16,1,4], jsol[16,1,5])
     return jsol,delmu,electro_flux,convective_flux
 
         

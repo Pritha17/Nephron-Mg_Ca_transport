@@ -123,6 +123,10 @@ def compute_fluxes (cell,j):
                 solute_id,fluxCalatapse=ATPase.calatapse_mtal(cell,j,cell.ep,memb_id,cell.trans[i].act,cell.area)
             for i in range(len(solute_id)):
                 jsol[solute_id[i]][memb_id[0]][memb_id[1]] += fluxCalatapse[i]
+        elif transporter_type == 'MgATPase':
+            solute_id,fluxMgatapse=ATPase.Mgatapse(cell,cell.ep,memb_id,cell.trans[i].act,cell.area)
+            for i in range(len(solute_id)):
+                jsol[solute_id[i]][memb_id[0]][memb_id[1]] += fluxMgatapse[i]
         elif transporter_type == 'TRPV5':
             solute_id, fluxTRPV5 = TRPV5.trpv5(cell, j, cell.ep, memb_id, cell.trans[i].act, cell.area)
             for i in range(len(solute_id)):
@@ -212,6 +216,7 @@ def compute_fluxes (cell,j):
     # if cell.segment == 'LDL':
     #     print(jsol)
     #     input('pause')
+    #print("flux", jsol[16,1,4], jsol[16,1,5])
     return jvol,jsol, electro_flux,convective_flux, active_jsol
 
     

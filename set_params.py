@@ -503,7 +503,6 @@ def read_params(cell,filename,j):
                     elif cell.segment == 'CNT':
                         HT_rat = 0.3 #0.2
                         cell.h[1,0,1] = HT_rat*8.0
-                
                             
             # Coupled transporters:
             elif compare_string_prefix(id,"coupled"):
@@ -545,6 +544,10 @@ def read_params(cell,filename,j):
                 newTransp.act = value/(href*Cref)
                 #print('transporter')
                 #print(newTransp.membrane_id,newTransp.type,newTransp.act)
+                if cell.segment == 'DCT' and j < 2.0 / 3.0 * cell.total:
+                    if newTransp.type == 'CaATPase':
+                        newTransp.act = 1e-16 / (href*Cref)
+
                 if cell.type != 'sup' and cell.sex == 'female' and (cell.species == 'rat' or cell.species == 'mou'):
                     if cell.segment == 'mTAL' or cell.segment == 'cTAL':
                         if newTransp.type == 'NKCC2A' or newTransp.type == 'NKCC2B' or newTransp.type == 'NKCC2F' or newTransp.type == 'NaKATPase':

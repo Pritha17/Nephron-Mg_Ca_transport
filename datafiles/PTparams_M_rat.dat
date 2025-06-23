@@ -15,8 +15,8 @@ pressure 12.8
 area_Lumen_Cell	36.0
 area_Lumen_LIS	0.001
 area_Cell_LIS	36.0
-area_Cell_Bath	1.0d0
-area_LIS_Bath	1.0d0
+area_Cell_Bath	1.0
+area_LIS_Bath	1.0
 #
 #  compartment areas (reference)
 volref_Lumen	0.005
@@ -77,7 +77,7 @@ perm_HCO2_Lumen_Cell	0.0
 perm_H2CO2_Lumen_Cell	0.05e5
 perm_glucose_Lumen_Cell	0.0
 perm_Ca_Lumen_Cell	0.005
-perm_Mg_Lumen_Cell	0.0
+perm_Mg_Lumen_Cell	0.66e-9
 #
 #  solute permeabilities, basolateral interface (in 1e-5cm/s)
 #  default permeability = 0
@@ -221,6 +221,8 @@ transport_Cell_LIS_NaKATPase	300e-9
 transport_Lumen_Cell_HATPase	 50e-9
 transport_Cell_Bath_CaATPase	0.5e-9
 transport_Cell_LIS_CaATPase	0.5e-9
+transport_Cell_Bath_MgATPase	1e-16
+transport_Cell_LIS_MgATPase	    1e-16
 #
 #  interstitial concentration parameters
 # CM: cortico-medullary boundary; OI: outer-inner stripe boundary; Pap: papillary tip

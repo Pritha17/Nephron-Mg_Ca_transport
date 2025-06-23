@@ -20,6 +20,7 @@ import pdb
 def compute(N,filename,method, sup_or_jux=None,diabete='Non',species = 'human',sup_or_multi = 'superficial',inhibition=None,unx = 'N',preg='non', HT='N', HCa='N'):
     cw=Vref*60e6
     start=timeit.default_timer()
+    #print(method)
 
     cell = [membrane() for i in range(N)]
     fluxvals = [flux_class() for i in range(N)]
@@ -373,142 +374,41 @@ def compute(N,filename,method, sup_or_jux=None,diabete='Non',species = 'human',s
         celln = copy.deepcopy(cell[i+1])
         dx = 1.0e-3
 
-        if cell[0].segment == 'PT' or cell[0].segment == 'S3' or cell[0].segment =='SDL' or cell[0].segment == 'LDL' or cell[0].segment == 'LAL' or cell[0].segment == 'mTAL' or cell[0].segment == 'cTAL' or cell[0].segment == 'MD' or cell[0].segment == 'DCT' or cell[0].segment == 'IMCD':
+        if cell[0].segment == 'PT' or cell[0].segment == 'S3' or cell[0].segment == 'SDL' or cell[0].segment == 'LDL' or \
+                cell[0].segment == 'LAL' or cell[0].segment == 'mTAL' or cell[0].segment == 'cTAL' or cell[
+            0].segment == 'MD' or cell[0].segment == 'DCT' or cell[0].segment == 'IMCD':
+            x = np.zeros(3 * NS + 7)
 
-            # Mg2+ transport occurs only in PT, S3, cTAL, and DCT
-            # PT AND S3 have only paracellular Mg2+ transport
-            if cell[0].segment in ['PT', 'S3', 'SDL']:
-                x = np.zeros(3*NS+6)
+            x[0:NS] = cell[i].conc[:, 0]
+            x[NS:2 * NS] = cell[i].conc[:, 1]
+            x[2 * NS:3 * NS] = cell[i].conc[:, 4]
+            #print(x[33])
 
-                x[0:NS] = cell[i].conc[:,0]
-                x[NS:2*NS-1] = cell[i].conc[:16,1]
-                x[2*NS-1:3*NS-1] = cell[i].conc[:,4]
-        
-                x[3*NS-1] = cell[i].vol[0]
-                x[3*NS] = cell[i].vol[1]
-                x[3*NS+1] = cell[i].vol[4]
-    
-                x[3*NS+2] = cell[i].ep[0]
-                x[3*NS+3] = cell[i].ep[1]
-                x[3*NS+4] = cell[i].ep[4]
-        
-                x[3*NS+5] = cell[i].pres[0]
-            
+            x[3 * NS] = cell[i].vol[0]
+            x[3 * NS + 1] = cell[i].vol[1]
+            x[3 * NS + 2] = cell[i].vol[4]
 
-            # DCT has only transcellular Mg2+ transport and paracellular & transcellular Ca2+ transport
-            elif cell[0].segment == 'DCT':
-                if i < 2.0/3.0*cell[0].total:
-                    x = np.zeros(3*NS+6)
+            x[3 * NS + 3] = cell[i].ep[0]
+            x[3 * NS + 4] = cell[i].ep[1]
+            x[3 * NS + 5] = cell[i].ep[4]
 
-                    x[0:NS] = cell[i].conc[:, 0]
-                    x[NS:2*NS-2] = cell[i].conc[:15, 1]
-                    x[2*NS-2] = cell[i].conc[16, 1]
-                    x[2*NS-1:3*NS-1] = cell[i].conc[:, 4]
+            x[3 * NS + 6] = cell[i].pres[0]
 
-                    x[3*NS-1] = cell[i].vol[0]
-                    x[3*NS] = cell[i].vol[1]
-                    x[3*NS+1] = cell[i].vol[4]
-
-                    x[3*NS+2] = cell[i].ep[0]
-                    x[3*NS+3] = cell[i].ep[1]
-                    x[3*NS+4] = cell[i].ep[4]
-
-                    x[3*NS+5] = cell[i].pres[0]
-                else:
-                    x = np.zeros(3 * NS + 7)
-
-                    x[0:NS] = cell[i].conc[:, 0]
-                    x[NS:2 * NS] = cell[i].conc[:, 1]
-                    x[2 * NS:3 * NS] = cell[i].conc[:, 4]
-
-                    x[3 * NS] = cell[i].vol[0]
-                    x[3 * NS+1] = cell[i].vol[1]
-                    x[3 * NS + 2] = cell[i].vol[4]
-
-                    x[3 * NS + 3] = cell[i].ep[0]
-                    x[3 * NS + 4] = cell[i].ep[1]
-                    x[3 * NS + 5] = cell[i].ep[4]
-
-                    x[3 * NS + 6] = cell[i].pres[0]
-
-            else:
-                '''
-                Ca2+:
-                As mentioned in Bonny and Edward's papers:
-                Calcium reabsorption in the distal tubule: regulation by sodium, pH, and flow (2013)
-                Regulation of calcium reabsorption along the rat nephron: a modeling study (2014)
-                Trancellular Ca2+ transport is not considered for the TAL and intracelated cells of CNT and other segments that do not have trancellular transport
-                '''
-                x = np.zeros(3*NS+5)
-
-                x[0:NS] = cell[i].conc[:,0]
-                x[NS:2*NS-2] = cell[i].conc[:15,1]
-                x[2*NS-2:3*NS-2] = cell[i].conc[:,4]
-        
-                x[3*NS-2] = cell[i].vol[0]
-                x[3*NS-1] = cell[i].vol[1]
-                x[3*NS] = cell[i].vol[4]
-    
-                x[3*NS+1] = cell[i].ep[0]
-                x[3*NS+2] = cell[i].ep[1]
-                x[3*NS+3] = cell[i].ep[4]
-        
-                x[3*NS+4] = cell[i].pres[0]
-
-        # Trancellular and paracellular Mg2+ transport is not considered for CNT, CCD, and OMCD
         elif cell[0].segment == 'CNT' or cell[0].segment == 'CCD' or cell[0].segment == 'OMCD':
-            if cell[0].segment == 'CNT':
-                x = np.zeros(5*NS+6)
-                for j in range(NS):
-                    if j != 15 and j != 16:
-                        x[5*j]=cell[i].conc[j,0]
-                        x[5*j+1]=cell[i].conc[j,1]
-                        x[5*j+2]=cell[i].conc[j,2]
-                        x[5*j+3]=cell[i].conc[j,3]
-                        x[5*j+4]=cell[i].conc[j,4]
-                    elif j == 15:
-                        x[5*j]=cell[i].conc[j,0]
-                        x[5*j+1]=cell[i].conc[j,1]
-                        x[5*j+2]=cell[i].conc[j,4]
-                    else:
-                        x[5*j-2] = cell[i].conc[j, 0]
-                        x[5*j-1] = cell[i].conc[j, 4]
-
-                for j in range(NC-1):
-                    x[5*NS+j-5]=cell[i].vol[j]
-                    x[5*NS+5+j-5]=cell[i].ep[j]
-                x[5*NS+5]=cell[i].pres[0]
-
-            else:
-                '''
-                Ca2+:
-                As mentioned in Bonny and Edward's papers:
-                Calcium reabsorption in the distal tubule: regulation by sodium, pH, and flow (2013)
-                Regulation of calcium reabsorption along the rat nephron: a modeling study (2014)
-                Trancellular Ca2+ transport is not considered for the TAL and intracelated cells of CNT and other segments that do not have trancellular transport
-                '''
-                x = np.zeros(5*NS+5)
-                for j in range(NS):
-                    if j != 15 and j != 16:
-                        x[5*j]=cell[i].conc[j,0]
-                        x[5*j+1]=cell[i].conc[j,1]
-                        x[5*j+2]=cell[i].conc[j,2]
-                        x[5*j+3]=cell[i].conc[j,3]
-                        x[5*j+4]=cell[i].conc[j,4]
-                    elif j == 15:
-                        x[5*j]=cell[i].conc[j,0]
-                        x[5*j+1]=cell[i].conc[j,4]
-                    else:
-                        x[5*j-3] = cell[i].conc[j, 0]
-                        x[5*j-2] = cell[i].conc[j, 4]
-
-                for j in range(NC-1):
-                    x[5*NS+j-6]=cell[i].vol[j]
-                    x[5*NS+5+j-6]=cell[i].ep[j]
-                x[5*NS+4]=cell[i].pres[0]
+            x = np.zeros(5 * NS + 11)
+            for j in range(17):
+                x[5 * j] = cell[i].conc[j, 0]
+                x[5 * j + 1] = cell[i].conc[j, 1]
+                x[5 * j + 2] = cell[i].conc[j, 2]
+                x[5 * j + 3] = cell[i].conc[j, 3]
+                x[5 * j + 4] = cell[i].conc[j, 4]
+            for j in range(NC - 1):
+                x[5 * NS + j] = cell[i].vol[j]
+                x[5 * NS + 5 + j] = cell[i].ep[j]
+            x[5 * NS + 10] = cell[i].pres[0]
         else:
             print('cell.segment:' + cell[0].segment)
-            raise Exception('cell.segment:' + cell[0].segment +' is not set up')
+            raise Exception('cell.segment:' + cell[0].segment + ' is not set up')
         #print(x)
         #input('pausing...')
         # set up nonlinear system
@@ -523,7 +423,8 @@ def compute(N,filename,method, sup_or_jux=None,diabete='Non',species = 'human',s
                 if cell[0].preg != 'non':
                     sol = Newton_preg.newton_preg_rat(equations.conservation_eqs,x,i,cell[i])
                 else:
-                    sol, fluxvals[i+1].fluxes = Newton.newton_rat(equations.conservation_eqs,x,i,cell[i])
+                    #sol, fluxvals[i+1].fluxes = Newton.newton_rat(equations.conservation_eqs,x,i,cell[i])
+                    sol = Newton.newton_rat(equations.conservation_eqs, x, i, cell[i])
             elif species == 'mouse':
                 sol = Newton.newton_rat(equations.conservation_eqs,x,i,cell[i])
             else:
@@ -535,116 +436,37 @@ def compute(N,filename,method, sup_or_jux=None,diabete='Non',species = 'human',s
             raise Exception('what is this method?', method)
         
         # set up next cell
-        if cell[0].segment == 'PT' or cell[0].segment == 'S3' or cell[0].segment =='SDL' or cell[0].segment == 'LDL' or cell[0].segment == 'LAL' or cell[0].segment == 'mTAL' or cell[0].segment == 'cTAL' or cell[0].segment == 'MD' or cell[0].segment == 'DCT' or cell[0].segment == 'IMCD':
+        if cell[0].segment == 'PT' or cell[0].segment == 'S3' or cell[0].segment == 'SDL' or cell[0].segment == 'LDL' or cell[0].segment == 'LAL' or cell[0].segment == 'mTAL' or cell[0].segment == 'cTAL' or cell[0].segment == 'MD' or cell[0].segment == 'DCT' or cell[0].segment == 'IMCD':
+            cell[i + 1].conc[:, 0] = sol[0:NS]
+            cell[i + 1].conc[:, 1] = sol[NS:NS * 2]
+            cell[i + 1].conc[:, 4] = sol[NS * 2:NS * 3]
 
-            if cell[0].segment in ['PT','S3', 'SDL']:
-                cell[i+1].conc[:,0] = sol[0:NS]
-                cell[i+1].conc[:16,1] = sol[NS:2*NS-1]
-                cell[i+1].conc[:,4] = sol[2*NS-1:3*NS-1]
+            cell[i + 1].vol[0] = sol[3 * NS]
+            cell[i + 1].vol[1] = sol[3 * NS + 1]
+            cell[i + 1].vol[4] = sol[3 * NS + 2]
 
-                cell[i+1].vol[0] = sol[3*NS-1]
-                cell[i+1].vol[1] = sol[3*NS]
-                cell[i+1].vol[4] = sol[3*NS+1]
-        
-                cell[i+1].ep[0] = sol[3*NS+2]
-                cell[i+1].ep[1] = sol[3*NS+3]
-                cell[i+1].ep[4] = sol[3*NS+4]
-        
-                cell[i+1].pres[0] = sol[3*NS+5]
-            
+            cell[i + 1].ep[0] = sol[3 * NS + 3]
+            cell[i + 1].ep[1] = sol[3 * NS + 4]
+            cell[i + 1].ep[4] = sol[3 * NS + 5]
 
-            elif cell[0].segment == 'DCT':
-                if i < 2.0 / 3.0 * cell[0].total:
-                    cell[i+1].conc[:, 0] = sol[0:NS]
-                    cell[i+1].conc[:15, 1] = sol[NS:2*NS-2]
-                    cell[i + 1].conc[16, 1] = sol[2*NS-2]
-                    cell[i+1].conc[:, 4] = sol[2*NS-1:3*NS-1]
-
-                    cell[i+1].vol[0] = sol[3*NS-1]
-                    cell[i+1].vol[1] = sol[3*NS]
-                    cell[i+1].vol[4] = sol[3*NS+1]
-
-                    cell[i+1].ep[0] = sol[3*NS+2]
-                    cell[i+1].ep[1] = sol[3*NS+3]
-                    cell[i+1].ep[4] = sol[3*NS+4]
-
-                    cell[i+1].pres[0] = sol[3*NS+5]
-                else:
-                    cell[i + 1].conc[:, 0] = sol[0:NS]
-                    cell[i + 1].conc[:, 1] = sol[NS:2 * NS]
-                    cell[i + 1].conc[:, 4] = sol[2 * NS:3 * NS]
-
-                    cell[i + 1].vol[0] = sol[3 * NS]
-                    cell[i + 1].vol[1] = sol[3 * NS+1]
-                    cell[i + 1].vol[4] = sol[3 * NS + 2]
-
-                    cell[i + 1].ep[0] = sol[3 * NS + 3]
-                    cell[i + 1].ep[1] = sol[3 * NS + 4]
-                    cell[i + 1].ep[4] = sol[3 * NS + 5]
-
-                    cell[i + 1].pres[0] = sol[3 * NS + 6]
-
-            else:
-                cell[i+1].conc[:,0] = sol[0:NS]
-                cell[i+1].conc[:15,1] = sol[NS:NS*2-2]
-                cell[i+1].conc[:,4] = sol[NS*2-2:NS*3-2]
-
-                cell[i+1].vol[0] = sol[3*NS-2]
-                cell[i+1].vol[1] = sol[3*NS-1]
-                cell[i+1].vol[4] = sol[3*NS]
-        
-                cell[i+1].ep[0] = sol[3*NS+1]
-                cell[i+1].ep[1] = sol[3*NS+2]
-                cell[i+1].ep[4] = sol[3*NS+3]
-        
-                cell[i+1].pres[0] = sol[3*NS+4]
-
+            cell[i + 1].pres[0] = sol[3 * NS + 6]
         elif cell[0].segment == 'CNT' or cell[0].segment == 'CCD' or cell[0].segment == 'OMCD':
-            if cell[0].segment == 'CNT':
-                for j in range(NS):
-                    if j != 15 and j != 16:
-                        cell[i+1].conc[j,0] = sol[5*j]
-                        cell[i+1].conc[j,1] = sol[5*j+1] 
-                        cell[i+1].conc[j,2] = sol[5*j+2]
-                        cell[i+1].conc[j,3] = sol[5*j+3]
-                        cell[i+1].conc[j,4] = sol[5*j+4]
-                    elif j == 15:
-                        cell[i+1].conc[j,0] = sol[5*j]
-                        cell[i+1].conc[j,1] = sol[5*j+1] 
-                        cell[i+1].conc[j,4] = sol[5*j+2]
-                    else:
-                        cell[i+1].conc[j,0] = sol[5*j-2]
-                        cell[i+1].conc[j,4] = sol[5*j-1]
+            for j in range(17):
+                cell[i + 1].conc[j, 0] = sol[5 * j]
+                cell[i + 1].conc[j, 1] = sol[5 * j + 1]
+                cell[i + 1].conc[j, 2] = sol[5 * j + 2]
+                cell[i + 1].conc[j, 3] = sol[5 * j + 3]
+                cell[i + 1].conc[j, 4] = sol[5 * j + 4]
 
-                for j in range(NC-1):
-                    cell[i+1].vol[j] = sol[5*NS+j-5]
-                    cell[i+1].ep[j] = sol[5*NS+5+j-5]
-        
-                cell[i+1].pres[0] = sol[5*NS+5]
-            else:
-                for j in range(NS):
-                    if j != 15 and j != 16:
-                        cell[i+1].conc[j,0] = sol[5*j]
-                        cell[i+1].conc[j,1] = sol[5*j+1] 
-                        cell[i+1].conc[j,2] = sol[5*j+2]
-                        cell[i+1].conc[j,3] = sol[5*j+3]
-                        cell[i+1].conc[j,4] = sol[5*j+4]
-                    elif j == 15:
-                        cell[i+1].conc[j,0] = sol[5*j]
-                        cell[i+1].conc[j,4] = sol[5*j]
-                    else:
-                        cell[i+1].conc[j,0] = sol[5*j-3]
-                        cell[i+1].conc[j,4] = sol[5*j-2]
+            for j in range(NC - 1):
+                cell[i + 1].vol[j] = sol[5 * NS + j]
+                cell[i + 1].ep[j] = sol[5 * NS + 5 + j]
 
-                    for j in range(NC-1):
-                        cell[i+1].vol[j] = sol[5*NS+j-6]
-                        cell[i+1].ep[j] = sol[5*NS+5+j-6]
-        
-                    cell[i+1].pres[0] = sol[5*NS+4]
+            cell[i + 1].pres[0] = sol[5 * NS + 10]
     
         
 
-        elapsed = time.time() - t_i
+        #elapsed = time.time() - t_i
         #print("{}: cell {} concentrations for Ca2+: {}".format(cell[i+1].segment,i+1,cell[i+1].conc[15]))
         #print("{}: cell {} trans/para flux for Na+: {}, {}".format(cell[i+1].segment,i+1,fluxvals[i+1].fluxes[2][0][0,1],fluxvals[i+1].fluxes[2][0][0,4]))
         #print("Elapsed time for {} is {}".format(i+1,elapsed))
@@ -779,7 +601,8 @@ def compute(N,filename,method, sup_or_jux=None,diabete='Non',species = 'human',s
         file.write('Computation Time for %s %s: %f \n' %(cell[0].type,cell[0].segment,ComputationTime))
     file.close()
 
-    return cell, fluxvals
+    #return cell, fluxvals
+    return cell
 
 
 

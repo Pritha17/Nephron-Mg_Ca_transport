@@ -108,7 +108,7 @@ if __name__ == '__main__':
         filename = './datafiles/CCDparams_F_' + species[0:3] + '.dat'
     else:
         filename = './datafiles/CCDparams_F_' + species[0:3] + '.dat'
-    ccd, fluxvals_ccd = compute(NCCD, filename, 'Newton', diabete=diabete, species=species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
+    ccd = compute(NCCD, filename, 'Newton', diabete=diabete, species=species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NCCD)
 
@@ -128,7 +128,7 @@ if __name__ == '__main__':
         filename = './datafiles/OMCDparams_F_' + species[0:3] + '.dat'
     else:
         filename = './datafiles/OMCDparams_F_' + species[0:3] + '.dat'
-    omcd, fluxvals_omcd = compute(NOMCD, filename, 'Newton', diabete=diabete, species=species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
+    omcd = compute(NOMCD, filename, 'Newton', diabete=diabete, species=species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NOMCD)
 
@@ -148,7 +148,7 @@ if __name__ == '__main__':
         filename = './datafiles/IMCDparams_F_' + species[0:3] + '.dat'
     else:
         filename = './datafiles/IMCDparams_F_' + species[0:3] + '.dat'
-    imcd, fluxvals_imcd = compute(NIMCD, filename, 'Newton', diabete=diabete, species=species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
+    imcd = compute(NIMCD, filename, 'Newton', diabete=diabete, species=species, sup_or_multi=sup_or_multi, inhibition=inhib, unx=unx, preg=preg, HT=HT, HCa=HCa)
 
     Scaletorq = np.ones(NIMCD)
 

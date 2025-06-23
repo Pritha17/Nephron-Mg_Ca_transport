@@ -77,7 +77,7 @@ perm_H_Lumen_Cell	0.2
 perm_HCO2_Lumen_Cell	0.0
 perm_H2CO2_Lumen_Cell	0.0
 perm_glucose_Lumen_Cell	0.0
-perm_Ca_Lumen_Cell	0.0
+perm_Ca_Lumen_Cell	4.5e-9
 perm_Mg_Lumen_Cell	0.0
 #
 #  solute permeabilities, basolateral interface (in 1e-5cm/s)

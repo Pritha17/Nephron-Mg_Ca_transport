@@ -288,6 +288,11 @@ def output_segment_results(cell,sup_or_jux,Scaletorq,file_to_save,N):
                     for k in range(len(solute_id)):
                         file = open('./'+file_to_save+'/'+sex_or_preg+'_'+cell[0].species+'_'+cell[j].segment+'_'+transporter_type+'_'+solute[solute_id[k]]+sup_or_jux+'.txt','a')
                         file.write(str(fluxs[k]*Scaletorq[j])+'\n')
+                elif transporter_type == 'MgATPase':
+                    solute_id,fluxs=ATPase.Mgatapse(cell[j],cell[j].ep,memb_id,cell[j].trans[i].act,cell[j].area)
+                    for k in range(len(solute_id)):
+                        file = open('./'+file_to_save+'/'+sex_or_preg+'_'+cell[0].species+'_'+cell[j].segment+'_'+transporter_type+'_'+solute[solute_id[k]]+sup_or_jux+'.txt','a')
+                        file.write(str(fluxs[k]*Scaletorq[j])+'\n')
                 elif transporter_type == 'NKCC1':
                     jsol,delmu, electro_flux,convective_flux= electrochemical.compute_ecd_fluxes(cell[j],jvol)
                     solute_id,fluxs=NKCC.nkcc1(cell[j],memb_id,cell[j].trans[i].act,delmu)
